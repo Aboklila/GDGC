@@ -1,13 +1,6 @@
 
 
--- حذف الجداول لو كانت موجودة مسبقًا لتجنب الأخطاء
-DROP TABLE IF EXISTS Interact;
-DROP TABLE IF EXISTS Comment;
-DROP TABLE IF EXISTS Post;
-DROP TABLE IF EXISTS Interaction;
-DROP TABLE IF EXISTS [User];
 
--- إنشاء جدول المستخدمين
 CREATE TABLE [User] (
     UserID INT PRIMARY KEY IDENTITY(1,1),
     UserName VARCHAR(100) NOT NULL,
@@ -17,7 +10,7 @@ CREATE TABLE [User] (
     JoinDate DATETIME DEFAULT GETDATE()
 );
 
--- إنشاء جدول المنشورات
+
 CREATE TABLE Post (
     PostID INT PRIMARY KEY IDENTITY(1,1),
     UserID INT NOT NULL,
@@ -27,7 +20,7 @@ CREATE TABLE Post (
     FOREIGN KEY (UserID) REFERENCES [User](UserID) ON DELETE CASCADE
 );
 
--- إنشاء جدول التعليقات
+-- 
 CREATE TABLE Comment (
     CommentID INT PRIMARY KEY IDENTITY(1,1),
     UserID INT NOT NULL,
@@ -38,14 +31,14 @@ CREATE TABLE Comment (
     FOREIGN KEY (PostID) REFERENCES Post(PostID) ON DELETE CASCADE
 );
 
--- إنشاء جدول التفاعلات
+-- 
 CREATE TABLE Interaction (
     InteractionID INT PRIMARY KEY IDENTITY(1,1),
     Type VARCHAR(50) NOT NULL,
     InteractionDate DATETIME DEFAULT GETDATE()
 );
 
--- إنشاء جدول العلاقات بين المستخدمين والتفاعلات
+
 CREATE TABLE Interact (
     UserID INT NOT NULL,
     PostID INT NOT NULL,
@@ -56,14 +49,13 @@ CREATE TABLE Interact (
     FOREIGN KEY (InteractionID) REFERENCES Interaction(InteractionID) ON DELETE CASCADE
 );
 
--- إدخال بيانات تجريبية
+-- 
 INSERT INTO [User] (UserName, DOB, Email, Gender) VALUES ('Ibrahim', '2004-01-01', 'ibrahim@email.com', 'Male');
 INSERT INTO Post (UserID, Content, Visability) VALUES (1, 'My first post!', 'Public');
 INSERT INTO Comment (UserID, PostID, Content) VALUES (1, 1, 'Great post!');
 INSERT INTO Interaction (Type) VALUES ('Like');
 INSERT INTO Interact (UserID, PostID, InteractionID) VALUES (1, 1, 1);
 
--- استعلام لاختبار صحة البيانات
 SELECT * FROM [User];
 SELECT * FROM Post;
 SELECT * FROM Comment;
